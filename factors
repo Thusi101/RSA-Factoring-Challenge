@@ -1,45 +1,12 @@
-#!/usr/bin/python3
+#!/usr/bin/bash
 
-from sys import argv
+FILE=$1
 
-def factorize_number(num):
-    factors = []
-    if num % 2 == 0:
-        factors.append((num // 2, 2))
-    else:
-        for i in range(3, num, 2):
-            if num % i == 0:
-                factor = num // i
-                for j in range(3, factor, 2):
-                    if factor % j == 0 or i % j == 0:
-                        break
-                else:
-                    factors.append((factor, i))
-                    break
-    return factors
-
-def main():
-    print("Welcome to the Creative Factorizer!")
-    print("Enter a list of numbers to factorize.")
-    print("Enter 'q' to quit.")
-
-    while True:
-        user_input = input("Enter a number: ")
-        if user_input.lower() == 'q':
-            print("Exiting...")
+while read NUMBER; do
+    for (( i=2; i<=$NUMBER/2; i++ )); do
+        if (( $NUMBER % $i == 0 )); then
+            echo "$NUMBER=$i*$(($NUMBER/$i))"
             break
-        try:
-            num = int(user_input)
-            print("{:d} =".format(num), end="")
-            factors = factorize_number(num)
-            if factors:
-                for factor in factors:
-                    print(" {}*{}".format(factor[0], factor[1]), end="")
-                print()
-            else:
-                print(" Prime number!")
-        except ValueError:
-            print("Invalid input. Please enter a valid number or 'q' to quit.")
-
-if __name__ == "__main__":
-    main()
+        fi
+    done
+done < $FILE
