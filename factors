@@ -1,7 +1,12 @@
 #!/usr/bin/bash
+
 FILE=$1
-while read NUMBERS;
-do
-	factors=($(factor $NUMBERS))
-	echo "$NUMBERS=$(($NUMBERS/${factors[1]}))*${factors[1]}"
+
+while read NUMBER; do
+    for (( i=2; i<=$NUMBER/2; i++ )); do
+        if (( $NUMBER % $i == 0 )); then
+            echo "$NUMBER=$i*$(($NUMBER/$i))"
+            break
+        fi
+    done
 done < $FILE
